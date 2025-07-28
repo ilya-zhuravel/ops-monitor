@@ -8,12 +8,12 @@ import {
 } from '@nestjs/websockets';
 import {filter, interval, map, mergeMap, Observable, startWith, Subject, takeUntil} from 'rxjs';
 import { Server } from 'socket.io';
-import {AppService} from "./services/app.service";
-import {CurrentStatusResponse, ServerStatusHistory} from "./types";
-import {dto2Response, ServerStatusEntry} from "./db/server-status-entry.schema";
+import {CurrentStatusResponse, ServerStatusHistory} from "../types";
+import {dto2Response, ServerStatusEntry} from "../db/server-status-entry.schema";
 import {ConnectedSocket} from "@nestjs/websockets/decorators/connected-socket.decorator";
+import {ApiService} from "./api.service";
 
-const UPDATE_INTERVAL = 1000; //* 60 * 5; // 5 minutes
+const UPDATE_INTERVAL = 1000 //* 60 * 5; // 5 minutes
 
 @WebSocketGateway({
   cors: {
@@ -23,21 +23,21 @@ const UPDATE_INTERVAL = 1000; //* 60 * 5; // 5 minutes
 export class MonitorGateway {
   private clients = new WeakMap();
 
-  constructor(private appService: AppService) {
+  constructor(private apiService: ApiService) {
   }
 
   @WebSocketServer()
   server: Server;
 
   getCurrentStatus$(region: string) {
-    if(!this.appService.isValidRegion(region)) {
+    if(!this.apiService.isValidRegion(region)) {
       throw new Error('Invalid region ' + region)
     }
 
     return interval(UPDATE_INTERVAL).pipe(
       startWith(0),
       mergeMap(() => {
-        return fromPromise(this.appService.getMostRecentStatus(region)).pipe(
+        return fromPromise(this.apiService.getMostRecentStatus(region)).pipe(
           filter(Boolean),
           map((response: ServerStatusEntry): WsResponse<CurrentStatusResponse> => ({
             event: 'currentStatus',
@@ -51,7 +51,7 @@ export class MonitorGateway {
 
   @SubscribeMessage('getStatusHistory')
   async statusHistory(@MessageBody('region') region: string): Promise<WsResponse<ServerStatusHistory>> {
-    const recentHistory = await this.appService.getRecentStatusHistory(region);
+    const recentHistory = await this.apiService.getRecentStatusHistory(region);
 
     return {
       event: 'statusHistory',

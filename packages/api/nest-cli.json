@@ -4,5 +4,35 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true
+  },
+
+  "projects": {
+    "cron": {
+      "type": "application",
+      "root": ".",
+      "entryFile": "cronEntry",
+      "sourceRoot": "src",
+      "compilerOptions": {
+        "tsConfigPath": "tsconfig.app.json"
+      }
+    },
+    "api": {
+      "type": "application",
+      "root": ".",
+      "entryFile": "apiEntry",
+      "sourceRoot": "src",
+      "compilerOptions": {
+        "tsConfigPath": "tsconfig.json"
+      }
+    },
+    "dev": {
+      "type": "application",
+      "root": ".",
+      "entryFile": "apiEntry",
+      "sourceRoot": "main",
+      "compilerOptions": {
+        "tsConfigPath": "tsconfig.json"
+      }
+    }
   }
 }

@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import {AppService} from "./app.service";
 import {Model} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import {ServerStatusEntry} from "../db/server-status-entry.schema";
+import {CronService} from "./cron.service";
 
 @Injectable()
 export class TasksService {
   constructor(
-    private appService: AppService,
+    private cronService: CronService,
     @InjectModel(ServerStatusEntry.name) private serverStatusEntryModel: Model<ServerStatusEntry>,
   ) {
   }
@@ -17,7 +17,7 @@ export class TasksService {
   async pullDataTask() {
 
     try {
-      const statusResults = await this.appService.fetchStatuses();
+      const statusResults = await this.cronService.fetchStatuses();
 
       await Promise.all(statusResults.map(async (statusResponse) => {
         const newEntry = new this.serverStatusEntryModel({

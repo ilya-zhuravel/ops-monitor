@@ -5,9 +5,7 @@ import {
   MongooseModuleAsyncOptions,
   MongooseModuleFactoryOptions,
 } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
-import {DbModule} from "./db/db.module";
-import {CronModule} from "./cron/cron.module";
-import {ApiModule} from "./api/api.module";
+import {CronModule} from "./cron.module";
 
 @Module({
   imports: [
@@ -21,10 +19,9 @@ import {ApiModule} from "./api/api.module";
       },
       inject: [ConfigService],
     } as MongooseModuleAsyncOptions),
-    CronModule,
-    ApiModule
+    CronModule
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class CronEntryModule {}
