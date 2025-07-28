@@ -34,6 +34,7 @@ export class AppService {
     if (!this.isValidRegion(region)) {
       throw new Error(`Region ${region} is not supported.`);
     }
+
     const url = URLS[region];
 
     const response = await fetch(url)
@@ -44,8 +45,16 @@ export class AppService {
     return response.json();
   }
 
-  async getMostRecentStatus(region: string): Promise<ServerStatusEntry | null> {
-    return this.serverStatusEntryModel.findOne({ region }, { sort: { ts: -1 }, limit: 1 }).exec();
+  async getRecentStatusHistory(region: string): Promise<ServerStatusEntry[]> {
+    if (!this.isValidRegion(region)) {
+      throw new Error(`Region ${region} is not supported.`);
+    }
+    const timeAgo24h = new Date(Date.now() - 24*60*60 * 1000);
+    return this.serverStatusEntryModel.find({ region, ts: { $gt: timeAgo24h} }, {}, { sort: { ts: -1 } }).exec();
+  }
+
+  getMostRecentStatus(region: string): Promise<ServerStatusEntry | null> {
+    return this.serverStatusEntryModel.findOne({ region }, {}, { sort: { ts: -1 }, limit: 1 }).exec();
   }
 
 }

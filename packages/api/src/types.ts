@@ -30,9 +30,8 @@ export interface StatusEndpointResponse {
   server_issue: string | null;
 }
 
-
 export interface CurrentStatusResponse {
-  lastUpdate: number;
+  ts: number;
   serverCount: number;
   online: number;
   session: number;
@@ -41,4 +40,9 @@ export interface CurrentStatusResponse {
   waitTime: number;
   cpuLoad: number;
   timers: number;
+}
+
+export interface ServerStatusHistory {
+  region: string;
+  data: Array<CurrentStatusResponse>;
 }

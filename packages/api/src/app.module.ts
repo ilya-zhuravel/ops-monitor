@@ -6,10 +6,10 @@ import {
   MongooseModuleFactoryOptions,
 } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import { ScheduleModule } from '@nestjs/schedule';
-import {ServerStatusEntry, ServerStatusEntrySchema} from "./db/server-status-entry.schema";
-import {AppService} from "./app.service";
-import {TasksService} from "./tasks.service";
+import {AppService} from "./services/app.service";
+import {TasksService} from "./services/tasks.service";
 import {MonitorGateway} from "./monitor.gateway";
+import {DbModule} from "./db/db.module";
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import {MonitorGateway} from "./monitor.gateway";
       inject: [ConfigService],
     } as MongooseModuleAsyncOptions),
     ScheduleModule.forRoot(),
-    MongooseModule.forFeature([{ name: ServerStatusEntry.name, schema: ServerStatusEntrySchema }])
+    DbModule
   ],
   controllers: [],
   providers: [AppService, TasksService, MonitorGateway],
