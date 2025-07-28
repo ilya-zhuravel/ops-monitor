@@ -21,7 +21,6 @@ const UPDATE_INTERVAL = 1000; //* 60 * 5; // 5 minutes
   },
 })
 export class MonitorGateway {
-  private currentStates$: Record<string, Observable<WsResponse<CurrentStatusResponse>>> = {};
   private clients = new WeakMap();
 
   constructor(private appService: AppService) {
@@ -35,22 +34,19 @@ export class MonitorGateway {
       throw new Error('Invalid region ' + region)
     }
 
-    if (!this.currentStates$[region]) {
-      this.currentStates$[region] = interval(UPDATE_INTERVAL).pipe(
-        startWith(0),
-        mergeMap(() => {
-          return fromPromise(this.appService.getMostRecentStatus(region)).pipe(
-            filter(Boolean),
-            map((response: ServerStatusEntry): WsResponse<CurrentStatusResponse> => ({
-              event: 'currentStatus',
-              data: dto2Response(response)
-            })),
-          );
-        })
-      );
-    }
+    return interval(UPDATE_INTERVAL).pipe(
+      startWith(0),
+      mergeMap(() => {
+        return fromPromise(this.appService.getMostRecentStatus(region)).pipe(
+          filter(Boolean),
+          map((response: ServerStatusEntry): WsResponse<CurrentStatusResponse> => ({
+            event: 'currentStatus',
+            data: dto2Response(response)
+          })),
+        );
+      })
+    );
 
-    return this.currentStates$[region];
   }
 
   @SubscribeMessage('getStatusHistory')
@@ -71,18 +67,16 @@ export class MonitorGateway {
     if(this.clients.has(client)) {
       const {destroy$} = this.clients.get(client);
       this.clients.delete(client);
-      destroy$.next();
+      destroy$.next(true);
       destroy$.complete();
       this.clients.delete(client);
-
-      console.log('Unsubscribe');
     }
 
-    const destroy$ = this.clients.get(client)?.destroy$ || new Subject();
+    const destroy$ = new Subject();
     const stream$ = this.getCurrentStatus$(region).pipe(takeUntil(destroy$));
 
     this.clients.set(client, {
-      destroy$: new Subject(),
+      destroy$,
       stream$
     });
 

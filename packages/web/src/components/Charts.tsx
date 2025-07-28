@@ -1,5 +1,5 @@
 import {ServerStatusHistory} from "api/src/types";
-import {Box, Typography} from "@mui/material";
+import {Box, Paper, styled, Typography} from "@mui/material";
 import { LineChart } from '@mui/x-charts/LineChart';
 import {format} from "date-fns";
 
@@ -10,7 +10,7 @@ interface ChartsProps {
 export const Charts = ({history}: ChartsProps) => {
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', width: '100%' }}>
-      <Box sx={{mx: 2}}>
+      <ChartContainer sx={{mx: 2}} elevation={2}>
         <Typography variant="h6">CPU Load</Typography>
         <LineChart
           xAxis={[{
@@ -26,9 +26,9 @@ export const Charts = ({history}: ChartsProps) => {
           height={300}
           hideLegend={true}
         />
-      </Box>
+      </ChartContainer>
 
-      <Box sx={{mx: 2}}>
+      <ChartContainer sx={{mx: 2}} elevation={2}>
         <Typography variant="h6">Active Connections</Typography>
         <LineChart
           xAxis={[{
@@ -43,9 +43,9 @@ export const Charts = ({history}: ChartsProps) => {
           height={300}
           hideLegend={true}
         />
-      </Box>
+      </ChartContainer>
 
-      <Box sx={{mx: 2}}>
+      <ChartContainer sx={{mx: 2}} elevation={2}>
         <Typography variant="h6">Waiting time</Typography>
         <LineChart
           xAxis={[{
@@ -60,7 +60,15 @@ export const Charts = ({history}: ChartsProps) => {
           height={300}
           hideLegend={true}
         />
-      </Box>
+      </ChartContainer>
     </Box>
   );
 }
+
+const ChartContainer = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  margin: theme.spacing(2),
+  padding: theme.spacing(2),
+}));
