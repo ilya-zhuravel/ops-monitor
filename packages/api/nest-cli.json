@@ -13,7 +13,7 @@
       "entryFile": "cronEntry",
       "sourceRoot": "src",
       "compilerOptions": {
-        "tsConfigPath": "tsconfig.app.json"
+        "tsConfigPath": "tsconfig.json"
       }
     },
     "api": {

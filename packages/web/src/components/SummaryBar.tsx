@@ -1,4 +1,4 @@
-import {CurrentStatusResponse} from "api/dist/types";
+import {CurrentStatusResponse} from "api/src/types";
 import {Box, Paper, styled, Typography} from "@mui/material";
 import React from "react";
 
