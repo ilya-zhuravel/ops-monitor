@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    image: api-app
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=mongodb://root:Password1@mongo:27017/ops-monitor
+      - PORT=3001
+    depends_on:
+      - mongo
+
+  cron:
+    image: cron-app
+    environment:
+      - MONGODB_URI=mongodb://root:Password1@mongo:27017/ops-monitor
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    volumes:
+      - ./scripts/mongodb/data:/data/db
+      - ./scripts/mongodb/init-scripts:/docker-entrypoint-initdb.d
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Password1
+

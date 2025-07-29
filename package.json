@@ -1,0 +1,19 @@
+{
+  "name": "ops-monitor",
+  "version": "1.0.0",
+  "repository": "git@github.com:ilya-zhuravel/ops-monitor.git",
+  "author": "Illia Zhuravel",
+  "license": "MIT",
+  "scripts": {
+    "api:dev": "yarn workspace api start:dev",
+    "web:dev": "yarn workspace web start",
+    "db:start-mongodb": "docker compose -f scripts/local-mongodb.compose.yml --env-file .env up",
+    "docker:build-api": "docker build -t api-app --progress=plain --no-cache -f packages/api/.docker/api.dockerfile .",
+    "docker:build-cron": "docker build -t cron-app --progress=plain --no-cache -f packages/api/.docker/api.dockerfile .",
+    "docker:build-all": "yarn docker:build-api && yarn docker:build-cron"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "yarn@4.9.2"
+}
