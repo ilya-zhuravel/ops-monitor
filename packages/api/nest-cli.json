@@ -10,7 +10,7 @@
     "cron": {
       "type": "application",
       "root": ".",
-      "entryFile": "cronEntry",
+      "entryFile": "cron-entry",
       "sourceRoot": "src",
       "compilerOptions": {
         "tsConfigPath": "tsconfig.json"
@@ -19,7 +19,7 @@
     "api": {
       "type": "application",
       "root": ".",
-      "entryFile": "apiEntry",
+      "entryFile": "api-entry",
       "sourceRoot": "src",
       "compilerOptions": {
         "tsConfigPath": "tsconfig.json"
@@ -28,8 +28,8 @@
     "dev": {
       "type": "application",
       "root": ".",
-      "entryFile": "apiEntry",
-      "sourceRoot": "main",
+      "entryFile": "main",
+      "sourceRoot": "src",
       "compilerOptions": {
         "tsConfigPath": "tsconfig.json"
       }

@@ -5,7 +5,6 @@ import {
   MongooseModuleAsyncOptions,
   MongooseModuleFactoryOptions,
 } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
-import {DbModule} from "./db/db.module";
 import {CronModule} from "./cron/cron.module";
 import {ApiModule} from "./api/api.module";
 

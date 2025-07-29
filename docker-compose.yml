@@ -15,7 +15,6 @@ services:
     image: cron-app
     environment:
       - MONGODB_URI=mongodb://root:Password1@mongo:27017/ops-monitor
-      - PORT=3002
     depends_on:
       - mongo
 

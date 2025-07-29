@@ -22,4 +22,4 @@ RUN yarn workspaces focus --production api
 
 EXPOSE 3001
 
-CMD ["node", "packages/api/dist/cron-entry.js"]
+CMD ["node", "packages/api/dist/api-entry.js"]
