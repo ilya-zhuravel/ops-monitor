@@ -1,4 +1,7 @@
-# ops-monitor
+# This project was created as part of the interview for Upscale.
+
+Unfortunately, it was rejected without explanation.
+
 
 ## Run
 
